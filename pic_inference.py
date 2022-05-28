@@ -16,11 +16,8 @@ import argparse
 import numpy as np
 import os
 
-from dataloader import DataLoaderImgFile
-from net import WordDetectorNet
 # from visualization import visualize_and_plot
 from seg_model import *
-from infer import *
 
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
