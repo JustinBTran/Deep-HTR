@@ -2,7 +2,8 @@ import cv2
 import math
 import numpy as np # linear algebra
 # import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
-import tensorflow as tf
+# import tensorflow as tf
+import torch
 
 import os
 import warnings
@@ -165,11 +166,14 @@ def segment(img_path):
     # plt.show()
 
     found_lines = crop_text_to_lines(img3, arr_mins[0])
-    sess = tf.Session()
+    #sess = tf.Session()
     found_lines_arr = []
-    with sess.as_default():
-        for i in range(len(found_lines) - 1):
-            found_lines_arr.append(tf.expand_dims(found_lines[i], -1).eval())
+    #with sess.as_default():
+    for i in range(len(found_lines) - 1):
+        found_line_tensor = torch.FloatTensor(found_lines[i])
+        # found_lines_arr.append(found_line_tensor.expand(found_line_tensor[:, None]))
+        found_lines_arr.append(found_line_tensor[:, None].numpy())
+            # found_lines_arr.append(tf.expand_dims(found_lines[i], -1).eval())
 
     display_lines(found_lines)
     res_lines = transpose_lines(found_lines)
