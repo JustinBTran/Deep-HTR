@@ -14,3 +14,4 @@ seaborn
 flask
 flask_bootstrap
 boto3
+gunicorn
