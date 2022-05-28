@@ -36,29 +36,22 @@
     <div id="main_component">
       <h1>The Handwriting Recognition Algorithm</h1>
 
-      <p>In this page, you will get a chance to test out the Handwriting Recognition machine learning algorithm.</p>
+      <p>Here is a sample input and output of our model</p>
 
       <hr />
       {% block content %}
-      {% if cont != None %}
         <div class="alert alert-primary" role="alert" style="color:red">
           <p style="color:blue">The predicted text is:</p>
           <p>
-          {{ cont }}.
+          {{ "' Imagine a vast sheet of paper on which straight; Lines , Triangles , Squares , Pentagons , Haragawa , and other; move freely stood , on or in " the " }}.
           </p>
-        </div>
-      {% endif %}
 
       <div class="evaluatory_components">
 
         <div class="main_form_input">
           <form method=post enctype=multipart/form-data>
 
-            <p>
-              <label for="exampleFormControlFile1">Document</label>
-              <input type="file" class="form-control-file" id="exampleFormControlFile1" name=doc>
-            </p>
-
+            <button type="submit" class="btn btn-primary">See output</button>
           </form>
         </div>
         <div class="image">

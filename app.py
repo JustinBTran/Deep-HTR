@@ -109,6 +109,9 @@ def index():
 
 @app.route('/app/', methods=['GET', 'POST'])
 def main():
+    render = False
+    if request.method == 'POST':
+        render = True
     return render_template('index.html')
 
 if __name__ == '__main__':
