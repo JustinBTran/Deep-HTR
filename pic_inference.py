@@ -90,53 +90,6 @@ def read_word_trocr(path, model, cfg, generator, bpe, img_transform):
     # return cleaned_text
     return text
 
-def segment_old():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--device', choices=['cpu', 'cuda'], default='cpu')
-    args = parser.parse_args()
-
-    net = WordDetectorNet()
-    net.load_state_dict(torch.load('Word Detector Bkp/model/weights', map_location=args.device))
-    net.eval()
-    net.to(args.device)
-
-    net = WordDetectorNet()
-    net.load_state_dict(torch.load('Word Detector Bkp/model/weights', map_location=args.device))
-    net.eval()
-    net.to(args.device)
-
-    loader = DataLoaderImgFile(Path('Word Detector Bkp/data/test'), net.input_size, args.device)
-    res = evaluate(net, loader, max_aabbs=1000)
-
-    for i, (img, aabbs) in enumerate(zip(res.batch_imgs, res.batch_aabbs)):
-        f = loader.get_scale_factor(i)
-        aabbs = [aabb.scale(1 / f, 1 / f) for aabb in aabbs]
-        number = int(np.floor(np.log10(len(aabbs))))
-        ymins = {}
-        for j, aabb in enumerate(aabbs, 0):
-            ymins[j] = aabb.ymin
-        ymins = sorted(ymins, key=ymins.get)
-        aabbs_new = []
-        for ymin in ymins:
-            aabbs_new.append(aabbs[ymin])
-        start_line = 0
-        for j in range(1, len(aabbs_new)):
-            if aabbs_new[j].ymin > aabbs_new[j - 1].ymax or j == len(aabbs_new) - 1:
-                if j == len(aabbs_new) - 1:
-                    j += 1
-                xmins = {}
-                for k, aabb in enumerate(aabbs[start_line:j], start_line):
-                    xmins[k] = aabb.xmin
-                xmins = sorted(xmins, key=xmins.get)
-                aabbs_temp = []
-                for xmin in xmins:
-                    aabbs_temp.append(aabbs[xmin])
-                aabbs_new[start_line:j] = aabbs_temp
-                start_line = j
-        img = loader.get_original_img(i)
-        visualize_and_plot(img, aabbs_new, i)
-
-
 def clean_word(word):
     if len(word) > 2 and word[-2:] == " .":
         word = word[:-2]

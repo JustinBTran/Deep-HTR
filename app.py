@@ -57,55 +57,59 @@ def index():
     return render_template('home.html')
 
 
+# @app.route('/app/', methods=['GET', 'POST'])
+# def main():
+#     print(request.form)
+#     cont = None
+#     if request.method == 'POST':
+#         # if not os.path.exists("trocr-small-handwritten-best.pt"):
+#         #     download_model()
+#         stat_info = request.form.to_dict()
+#
+#         if 'doc' not in request.files:
+#             print('No file attached in request')
+#             return redirect(request.url)
+#
+#         doc_object = request.files['doc']
+#
+#         doc_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(doc_object.filename))
+#
+#         try:
+#             shutil.rmtree(app.config['UPLOAD_FOLDER'])
+#             os.mkdir(app.config['UPLOAD_FOLDER'])
+#         except:
+#             os.mkdir(app.config['UPLOAD_FOLDER'])
+#
+#         doc_object.save(doc_path)
+#
+#         segment(doc_path)
+#
+#         words = 'lines'
+#         paths = []
+#
+#         # model_path = './models/trocr-handwritten-best.pt' #need to change this once s3 integration works
+#         model_path = 'trocr-small-handwritten-best.pt'  # need to change this once s3 integration works
+#
+#
+#         beam = 5
+#         model, cfg, task, generator, bpe, img_transform, device = init(model_path, beam)
+#
+#         cont = []
+#         for image in sorted(os.listdir(words)):
+#             if image == '.DS_Store':
+#                 continue
+#             f = os.path.join(words, image)
+#             paths.append(f)
+#         paths.sort(key=os.path.getctime)
+#
+#         for path in paths:
+#             cont.append(read_word_trocr(path, model, cfg, generator, bpe, img_transform)[1:])
+#
+#     return render_template('index.html', cont=' '.join(cont) if cont else None)
+
 @app.route('/app/', methods=['GET', 'POST'])
 def main():
-    print(request.form)
-    cont = None
-    if request.method == 'POST':
-        if not os.path.exists("trocr-small-handwritten-best.pt"):
-            download_model()
-        stat_info = request.form.to_dict()
-
-        if 'doc' not in request.files:
-            print('No file attached in request')
-            return redirect(request.url)
-
-        doc_object = request.files['doc']
-
-        doc_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(doc_object.filename))
-
-        try:
-            shutil.rmtree(app.config['UPLOAD_FOLDER'])
-            os.mkdir(app.config['UPLOAD_FOLDER'])
-        except:
-            os.mkdir(app.config['UPLOAD_FOLDER'])
-
-        doc_object.save(doc_path)
-
-        segment(doc_path)
-
-        words = 'lines'
-        paths = []
-
-        # model_path = './models/trocr-handwritten-best.pt' #need to change this once s3 integration works
-        model_path = 'trocr-small-handwritten-best.pt'  # need to change this once s3 integration works
-
-        beam = 5
-        model, cfg, task, generator, bpe, img_transform, device = init(model_path, beam)
-
-        cont = []
-        for image in sorted(os.listdir(words)):
-            if image == '.DS_Store':
-                continue
-            f = os.path.join(words, image)
-            paths.append(f)
-        paths.sort(key=os.path.getctime)
-
-        for path in paths:
-            cont.append(read_word_trocr(path, model, cfg, generator, bpe, img_transform)[1:])
-
-    return render_template('index.html', cont=' '.join(cont) if cont else None)
-
+    return render_template('index.html')
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 3000))
